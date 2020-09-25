@@ -1,6 +1,8 @@
 # Hue.Blazor
 Blazor WebAssembly application to control your Hue lamps.
 
+## Live demo: http://github-hueblazor.michielpost.nl
+
 Current state: proof of concept
 
 Features:
@@ -9,6 +11,14 @@ Features:
 - Change the color of the lamps.
 
 NOTE: This app only runs on HTTP, because the Hue Bridge does not have a valid SSL certificate.
+
+## Screenshots
+
+![Initial](screenshots/00_initial.png)
+
+![Registered with bridge](screenshots/01_registered.png)
+
+![Colorpicker](screenshots/02_colorpicker.png)
 
 
 ## Dependencies
