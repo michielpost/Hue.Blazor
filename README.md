@@ -18,6 +18,8 @@ NOTE: This app only runs on HTTP, because the Hue Bridge does not have a valid S
 
 ![Registered with bridge](screenshots/01_registered.png)
 
+![Display groups and lights](screenshots/03_groups.png)
+
 ![Colorpicker](screenshots/02_colorpicker.png)
 
 
