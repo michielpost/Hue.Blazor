@@ -4,6 +4,7 @@
 @using Q42.HueApi
 @using Q42.HueApi.ColorConverters
 @using Q42.HueApi.ColorConverters.HSB
+@using Hue.Blazor.Models 
 
 <h1>Hue Blazor</h1>
 <link href="_content/BlazorColorPicker/colorpicker.css" rel="stylesheet" />
@@ -31,13 +32,47 @@ else if (!string.IsNullOrEmpty(ip))
 
 @if (!string.IsNullOrEmpty(apiKey))
 {
-    <button class="btn btn-primary" @onclick="OpenModal">
+    <button class="btn btn-primary" @onclick="@(e => OpenModal("0"))">
         <div style="background-color:@color" class="buttonColor"></div> Select a Color
     </button>
 
-    <ColorPicker Title="Hue ColorPicker" IsOpened="isOpened" Closed="ClosedEvent" MyColor="@color">
-    </ColorPicker>
+    
 }
+
+<div class="my-3 p-3 bg-white rounded shadow-sm">
+
+    @foreach (var group in vm.Groups)
+    {
+        <h2>@group.Name</h2>
+        <p>
+            <button class="btn btn-primary" @onclick="@(e => GroupOn(group.Id))">On</button>
+            <button class="btn btn-primary" @onclick="@(e => GroupOff(group.Id))">Off</button>
+            <button class="btn btn-primary" @onclick="@(e => OpenModal(group.Id))">
+                <div style="background-color:@color" class="buttonColor"></div> Select a Color
+            </button>
+        </p>
+        <p>
+            <br />
+            @foreach (var light in group.Lights)
+            {
+                if (light.IsOn)
+                {
+                    <img src="images/bulb button on.png" height="50" @onclick="@(e => LightOff(light.Id))" /> @light.Name <br />
+                }
+                else
+                {
+                    <img src="images/bulb button.png" height="50" @onclick="@(e => LightOn(light.Id))" /> @light.Name <br />
+                }
+
+
+            }
+        </p>
+    }
+
+</div>
+
+<ColorPicker Title="Hue ColorPicker" IsOpened="isOpened" Closed="ClosedEvent" MyColor="@color">
+</ColorPicker>
 
 <br />
 <br />
@@ -76,14 +111,16 @@ else if (!string.IsNullOrEmpty(ip))
             apiKey = await localStorage.GetItemAsync<string>(STORAGE_KEY_API);
         }
 
-        CreateHueClient();
+        await CreateHueClient();
     }
 
-    private void CreateHueClient()
+    private async Task CreateHueClient()
     {
         if (!string.IsNullOrEmpty(apiKey) && !string.IsNullOrEmpty(ip))
         {
             hueClient = new Q42.HueApi.LocalHueClient(ip, apiKey);
+
+            await LoadLights();
         }
         else if (!string.IsNullOrEmpty(ip))
         {
@@ -122,12 +159,100 @@ else if (!string.IsNullOrEmpty(ip))
         }
     }
 
+    MainViewModel vm = new MainViewModel();
+    private async Task LoadLights()
+    {
+        var lights = await hueClient.GetLightsAsync();
+        var groups = await hueClient.GetGroupsAsync();
+
+        foreach (var group in groups)
+        {
+            var groupVm = new GroupViewModel()
+            {
+                Id = group.Id,
+                Name = group.Name
+            };
+
+            foreach (var lightId in group.Lights)
+            {
+                var lightInfo = lights.Where(x => x.Id == lightId).FirstOrDefault();
+
+                var lightVm = new LightViewModel()
+                {
+                    Id = lightId,
+                    Name = lightInfo.Name,
+                    IsOn = lightInfo.State.On,
+                    Color = lightInfo.State.ToHex()
+                };
+
+                groupVm.Lights.Add(lightVm);
+            }
+
+            vm.Groups.Add(groupVm);
+        }
+    }
+
+    private Task GroupOn(string groupId)
+    {
+        Q42.HueApi.LightCommand lightCommand = new Q42.HueApi.LightCommand();
+        lightCommand.On = true;
+        lightCommand.SetColor(new RGBColor("#F1F7E9"));
+
+        var group = vm.Groups.Where(x => x.Id == groupId).FirstOrDefault();
+        foreach (var light in group.Lights)
+        {
+            light.IsOn = true;
+        }
+
+        return hueClient.SendGroupCommandAsync(lightCommand, groupId);
+    }
+
+    private Task GroupOff(string groupId)
+    {
+        Q42.HueApi.LightCommand lightCommand = new Q42.HueApi.LightCommand();
+        lightCommand.On = false;
+
+        var group = vm.Groups.Where(x => x.Id == groupId).FirstOrDefault();
+        foreach (var light in group.Lights)
+        {
+            light.IsOn = false;
+        }
+
+        return hueClient.SendGroupCommandAsync(lightCommand, groupId);
+    }
+
+    private Task LightOn(string lightId)
+    {
+        Q42.HueApi.LightCommand lightCommand = new Q42.HueApi.LightCommand();
+        lightCommand.On = true;
+        lightCommand.SetColor(new RGBColor("#F1F7E9"));
+
+        var light = vm.Groups.SelectMany(x => x.Lights).Where(x => x.Id == lightId).FirstOrDefault();
+        light.IsOn = true;
+
+        return hueClient.SendCommandAsync(lightCommand, new List<string> { lightId });
+    }
+
+    private Task LightOff(string lightId)
+    {
+        Q42.HueApi.LightCommand lightCommand = new Q42.HueApi.LightCommand();
+        lightCommand.On = false;
+
+        var light = vm.Groups.SelectMany(x => x.Lights).Where(x => x.Id == lightId).FirstOrDefault();
+        light.IsOn = false;
+
+        return hueClient.SendCommandAsync(lightCommand, new List<string> { lightId });
+    }
+
+
     bool isOpened = false;
     string color = "#F1F7E9";
+    string colorPickerGroupId;
 
-    void OpenModal()
+    void OpenModal(string groupId)
     {
         isOpened = true;
+        colorPickerGroupId = groupId;
     }
 
     Task ClosedEvent(string value)
@@ -139,6 +264,6 @@ else if (!string.IsNullOrEmpty(ip))
         lightCommand.On = true;
         lightCommand.SetColor(new RGBColor(color));
 
-        return hueClient.SendGroupCommandAsync(lightCommand);
+        return hueClient.SendGroupCommandAsync(lightCommand, colorPickerGroupId);
     }
 }
