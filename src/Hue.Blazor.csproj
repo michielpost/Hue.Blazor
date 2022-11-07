@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -12,11 +12,12 @@
   <ItemGroup>
 	<PackageReference Include="BlazorColorPicker" Version="2.2.0" />
 	<PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
+	<PackageReference Include="HueApi" Version="0.9.4" />
+	<PackageReference Include="HueApi.ColorConverters" Version="0.5.42" />
 	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.10" />
 	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.10" PrivateAssets="all" />
 	<PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
-	<PackageReference Include="Q42.HueApi" Version="3.20.0" />
-	<PackageReference Include="Q42.HueApi.ColorConverters" Version="3.18.1" />
+
 </ItemGroup>
 
 </Project>
