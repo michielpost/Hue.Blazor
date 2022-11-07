@@ -1,17 +1,22 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+	<BlazorEnableTimeZoneSupport>false</BlazorEnableTimeZoneSupport>
+	<BlazorWebAssemblyPreserveCollationData>false</BlazorWebAssemblyPreserveCollationData>
+	<InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BlazorColorPicker" Version="1.1.2" />
-    <PackageReference Include="Blazored.LocalStorage" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.2" PrivateAssets="all" />
-    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
-    <PackageReference Include="Q42.HueApi" Version="3.17.0" />
-    <PackageReference Include="Q42.HueApi.ColorConverters" Version="3.14.0" />
-  </ItemGroup>
+	<PackageReference Include="BlazorColorPicker" Version="2.2.0" />
+	<PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.10" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.10" PrivateAssets="all" />
+	<PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
+	<PackageReference Include="Q42.HueApi" Version="3.20.0" />
+	<PackageReference Include="Q42.HueApi.ColorConverters" Version="3.18.1" />
+</ItemGroup>
 
 </Project>

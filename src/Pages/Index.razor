@@ -4,10 +4,9 @@
 @using Q42.HueApi
 @using Q42.HueApi.ColorConverters
 @using Q42.HueApi.ColorConverters.HSB
-@using Hue.Blazor.Models 
+@using Hue.Blazor.Models
 
 <h1>Hue Blazor</h1>
-<link href="_content/BlazorColorPicker/colorpicker.css" rel="stylesheet" />
 
 @if (!string.IsNullOrEmpty(ip))
 {
@@ -36,7 +35,7 @@ else if (!string.IsNullOrEmpty(ip))
         <div style="background-color:@color" class="buttonColor"></div> Select a Color
     </button>
 
-    
+
 }
 
 <div class="my-3 p-3 bg-white rounded shadow-sm">
@@ -73,6 +72,7 @@ else if (!string.IsNullOrEmpty(ip))
 
 <ColorPicker Title="Hue ColorPicker" IsOpened="isOpened" Closed="ClosedEvent" MyColor="@color">
 </ColorPicker>
+
 
 <br />
 <br />
@@ -168,22 +168,22 @@ else if (!string.IsNullOrEmpty(ip))
         foreach (var group in groups)
         {
             var groupVm = new GroupViewModel()
-            {
-                Id = group.Id,
-                Name = group.Name
-            };
+                {
+                    Id = group.Id,
+                    Name = group.Name
+                };
 
             foreach (var lightId in group.Lights)
             {
                 var lightInfo = lights.Where(x => x.Id == lightId).FirstOrDefault();
 
                 var lightVm = new LightViewModel()
-                {
-                    Id = lightId,
-                    Name = lightInfo.Name,
-                    IsOn = lightInfo.State.On,
-                    Color = lightInfo.State.ToHex()
-                };
+                    {
+                        Id = lightId,
+                        Name = lightInfo.Name,
+                        IsOn = lightInfo.State.On,
+                        Color = lightInfo.State.ToHex()
+                    };
 
                 groupVm.Lights.Add(lightVm);
             }
