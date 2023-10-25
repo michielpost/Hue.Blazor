@@ -10,13 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="BlazorColorPicker" Version="2.2.0" />
-	<PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
-	<PackageReference Include="HueApi" Version="0.9.5" />
-	<PackageReference Include="HueApi.ColorConverters" Version="0.9.5" />
-	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.0" />
-	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.0" PrivateAssets="all" />
-	<PackageReference Include="System.Net.Http.Json" Version="7.0.0" />
+	<PackageReference Include="BlazorColorPicker" Version="2.3.0" />
+	<PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
+	<PackageReference Include="HueApi" Version="1.4.0" />
+	<PackageReference Include="HueApi.ColorConverters" Version="1.0.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.13" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.13" PrivateAssets="all" />
+	<PackageReference Include="System.Net.Http.Json" Version="7.0.1" />
 
 </ItemGroup>
 
